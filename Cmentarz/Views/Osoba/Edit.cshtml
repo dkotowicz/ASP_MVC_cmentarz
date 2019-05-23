@@ -1,0 +1,39 @@
+﻿@model Cmentarz.ViewModels.DetailOsobyViewModel
+@using (Html.BeginForm())
+            {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.osobaId)
+    @Html.HiddenFor(model => model.kwateraId)
+    @Html.HiddenFor(model => model.sektorId)
+    @Html.HiddenFor(model => model.rzadId)
+    <div class="col-lg-8 col-centered">
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Edycja danych o osobie</strong>
+        </h2>
+        <hr>
+        <table class="table">
+            <tr class="header">
+                <th>Sektor @Html.DisplayFor(model => model.sektor)</th>
+                <th>Rzad @Html.DisplayFor(model => model.rzad)</th>
+                <th>Nr kwatery @Html.DisplayFor(model => model.pozycja)</th>
+                <th>Prolongata do @Html.DisplayFor(model => model.prolongata)</th>
+                <th>Glębinowy @Html.DisplayFor(model => model.glebiniowy, new { style = "transform: scale(1.5);" })</th>
+            </tr>
+        </table>
+        <label>Nazwisko</label>
+        @Html.TextBoxFor(model => model.nazwisko, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.nazwisko, "", new { @class = "text-danger" })<br />
+        <label>Imie</label>
+        @Html.TextBoxFor(model => model.imie, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.imie, "", new { @class = "text-danger" })<br />
+        <label>Data śmierci</label>
+        @Html.TextBoxFor(model => model.data_smierci, new { placeholder = "dd-mm-rrrr", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.data_smierci, "", new { @class = "text-danger" })<br />
+        <label>Uwagi do kwatery</label>
+        @Html.TextBoxFor(model => model.uwagi, new { @class = "form-control" })
+        <br />
+        <button type="submit" class="btn btn-default" style="float:right;">Wróć</button>
+        <input type="submit" value="Zapisz" class="btn btn-default" />
+    </div>
+}

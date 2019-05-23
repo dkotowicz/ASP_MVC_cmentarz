@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Cmentarz.ViewModels.OsobyListViewModel>
+@if (ViewBag.count_osoby == 0)
+{
+    if (ViewBag.NotFind == true)
+    {
+        
+        <h2 class="intro-text text-left">
+            <strong>Podaj dane do wyszukiwania</strong>
+        </h2>
+    }
+    else
+    {
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Nie znaleziono</strong>
+        </h2>
+        <hr>
+    }
+
+}
+@if ((ViewBag.kwatera_null != 0) && (ViewBag.count_osoby != 0))
+{
+    <hr>
+    <h2 class="intro-text text-center">
+        <strong>Wyszukane osoby</strong>
+    </h2>
+    <hr>
+
+        <div class="col-lg-6">
+                <table class="table">
+
+                    @foreach (var osoba in Model.Take(5))
+                    {
+                        <tr>
+                            <td class="data">@osoba.Nazwisko</td>
+                            <td class="data">@osoba.Imie</td>
+                            <td>@osoba.Data_smierci </td>
+                            <td>@osoba.Sektor/@osoba.Rzad/@osoba.Pozycja</td>
+                            <td>
+                                @using (Ajax.BeginForm("Details", "Osoba", new { id = osoba.OsobaId }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "sidebar", InsertionMode = InsertionMode.Replace }))
+                        {
+                            if (ViewBag.Admin == true)
+                            {
+                                        <button class="btn" onclick="location.href = '@Url.Action("DetailsAdmin", "Osoba", new {id = osoba.OsobaId})';return false;">Więcej</button>
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" class="btn btn-default" value="Więcej" onclick='ShowSidebar()' />
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        if (ViewBag.count_osoby > 5)
+        {
+        <div class="col-lg-6">
+            <table class="table">
+                @foreach (var osoba in Model.Reverse().Take(5))
+                {
+                    <tr>
+                        <td class="data">@osoba.Nazwisko</td>
+                        <td class="data">@osoba.Imie</td>
+                        <td>@osoba.Data_smierci </td>
+                        <td>@osoba.Sektor/@osoba.Rzad/@osoba.Pozycja</td>
+                        <td>
+                            @using (Ajax.BeginForm("Details", "Osoba", new { id = osoba.OsobaId }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "sidebar", InsertionMode = InsertionMode.Replace }))
+                        {
+                            if (ViewBag.Admin == true)
+                            {
+                                    <button class="btn" onclick="location.href = '@Url.Action("DetailsAdmin", "Osoba", new {id = osoba.OsobaId})';return false;">Więcej</button>
+                                }
+                                else
+                                {
+                                    <input type="submit" class="btn btn-default" value="Więcej" onclick='ShowSidebar()' />
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    if (@ViewBag.count_osoby == 10)
+    {
+        <button type="submit" class="btn btn-default" onclick="location.href='@Url.Action("ListAll", "Home")';return false;">Wyświetl wszystkie</button>
+    }
+}

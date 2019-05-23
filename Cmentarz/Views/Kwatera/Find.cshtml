@@ -1,0 +1,64 @@
+﻿@model Cmentarz.ViewModels.SearchViewModel
+@using (Ajax.BeginForm("List", "Kwatera", null, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "main-content", InsertionMode = InsertionMode.Replace }))
+            {
+    @Html.ValidationSummary(true)
+    <div class="col-lg-5 col-centered">
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Wyszukiwanie pustych kwater</strong>
+        </h2>
+        <hr>
+        <label>Wybierz sektor</label><br />
+        <select id="sektorDropDown" onchange="getRzadList()" class="form-control" name="sektor">
+            <option value="">Wybierz</option>
+            @foreach (var item in ViewBag.sektor)
+            {
+                <text>
+                    <option value="@item.sektorId">@item.sektor</option>
+                </text>
+            }
+        </select><br />
+        <label>Wybierz rząd</label><br />
+        <select id="rzadDropDown" class="form-control" name="rzad">
+            <option>Wybierz</option>
+        </select>
+        <br />
+        <input type="submit" class="btn btn-default" value="Wyszukaj" />
+        <br /> <br />
+        </div>
+        <div class="col-lg-7 col-centered">
+            <div id="main-content" class="main-content">
+            </div>
+        </div>
+}
+@section ScriptsBottom{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+    <script src="~/Scripts/ajaxSearchScripts.js"></script>
+    <script src="~/Scripts/jquery-ajax-unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script>
+        function getRzadList() {
+            debugger;
+            var stateId = $("#sektorDropDown").val();
+            $.ajax
+            ({
+                url: '/Kwatera/GetRzadList',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    stateId: +stateId
+                }),
+                success: function (result) {
+                    $("#rzadDropDown").html("");
+                    $("#rzadDropDown").append
+                    ($('<option></option>').val(null).html("Znalezione rzędy"));
+                    $.each($.parseJSON(result), function (i, city)
+                    { $("#rzadDropDown").append($('<option></option>').val(city.rzad).html(city.rzad)) })
+                }
+            });
+        }
+    </script>
+}

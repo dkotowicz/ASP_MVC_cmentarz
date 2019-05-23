@@ -1,0 +1,32 @@
+﻿@model PagedList.IPagedList<Cmentarz.ViewModels.OsobyListViewModel>
+    @using PagedList.Mvc;
+    <table class="table">
+        <tr class="header">
+            <th>Nazwisko</th>
+            <th>Imię</th>
+            <th>Data śmierci</th>
+            <th>Lokalizacja</th>
+        </tr>
+        @foreach (var osoba in Model)
+            {
+            <tr>
+                <td class="data">@osoba.Nazwisko</td>
+                <td class="data">@osoba.Imie</td>
+                <td>@osoba.Data_smierci</td>
+                <td>@osoba.Sektor/@osoba.Rzad/@osoba.Pozycja</td>
+                <td>
+                    <button class="btn btn-default" onclick="location.href='@Url.Action("DetailsAdmin", "Osoba", new { id = osoba.OsobaId })';return false;">Dane o osobie</button>
+                    <button class="btn btn-default" onclick="location.href='@Url.Action("Details", "Kwatera", new { id = osoba.KwateraId })';return false;">Przejdź do kwatery</button>
+                    @if (ViewBag.Admin == true)
+                {
+                        <button class="btn btn-default" onclick="location.href='@Url.Action("Edit", "Osoba", new { id = osoba.OsobaId })';return false;">Edytuj dane o osobie</button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+@Html.PagedListPager(Model, page => Url.Action("ListAll", new { page, pageSize = Model.PageSize}))
+Wyświetlono  @Model.LastItemOnPage z @Model.TotalItemCount 
+
+
+

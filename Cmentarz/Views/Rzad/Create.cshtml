@@ -1,0 +1,26 @@
+﻿@model Cmentarz.ViewModels.RzadAddViewModel
+<div class="col-lg-5 col-centered" style="min-height: 300px;">
+    <div>
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Dodawanie nowego rzędu</strong>
+        </h2>
+        <hr>
+        <form id="search-form" method="get" data-ajax-target=".main-content"
+              class="search-form" action="@Url.Action("List")">
+            @Html.Label("Wybierz sektor w którym chcesz dodać rząd")
+            @Html.DropDownList("sektor", null, new { @class = "form-control" }) <br /><br />
+            <input type="submit" value="Wybierz" class="btn btn-default" />
+        </form>
+        <br />
+        <div class="main-content">
+        </div>
+    </div>
+</div>
+
+@section ScriptsBottom{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+    <script src="~/Scripts/ajaxSearchScripts.js"></script>
+}
+

@@ -1,0 +1,41 @@
+﻿@model Cmentarz.ViewModels.DetailOsobyViewModel
+<div class="col-lg-12 col-centered text-center">
+    <br /><br />
+    <hr>
+    <h2 class="intro-text text-center">
+        <strong>Dane o osobie</strong>
+    </h2>
+    <hr>
+    <div class="head">
+        <h5>ś.p. @Html.DisplayFor(model => model.imie) @Html.DisplayFor(model => model.nazwisko)</h5>
+        <h5>Data śm. @Html.DisplayFor(model => model.data_smierci)</h5>
+    </div>
+    <div class="loc">
+        <div class="coord">
+            <div class="var">SEKTOR</div>
+            <div class="val">@Html.DisplayFor(model => model.sektor)</div>
+        </div>
+        <div class="coord">
+            <div class="var">RZĄD</div>
+            <div class="val">@Html.DisplayFor(model => model.rzad)</div>
+        </div>
+        <div class="coord">
+            <div class="var">KWATERA</div>
+            <div class="val">@Html.DisplayFor(model => model.pozycja)</div>
+        </div>
+    </div>
+    <br />
+    <label>Prolongata do: @Html.DisplayFor(model => model.prolongata)</label><br />
+    <label>Uwagi do kwatery: </label>
+    <label>@Html.DisplayFor(model => model.uwagi)</label><br /><br />
+    @if (ViewBag.Admin == true)
+    {
+        <button class="btn btn-default" onclick="location.href='@Url.Action("Details","Kwatera", new {id = Model.kwateraId})';return false;">Przejdź do kwatery</button>
+                    <button class="btn btn-default" onclick="location.href='@Url.Action("Edit","Osoba", new {id = Model.osobaId })';return false;">Edytuj dane o osobie</button>
+                    <button class="btn btn-default" onclick="Confirm.render('Na pewno chcesz usunąć dane o wybranej osobie?', 'delete_post', '@Model.osobaId')">Usuń osobę</button>
+    }
+</div>
+@section ScriptsBottom{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+}

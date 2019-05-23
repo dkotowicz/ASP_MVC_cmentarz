@@ -1,0 +1,102 @@
+﻿@model Cmentarz.ViewModels.KwateryViewModel
+
+<div class="col-lg-12">
+    <hr>
+    <h2 class="intro-text text-center">
+        <strong>Informacje o grobie</strong>
+    </h2>
+    <hr>
+    <div class="col-lg-4">
+        <div class="picture1">
+            <img id="myImg" src="@Url.Content(Model.zdjecie)" alt="zdjęcie" class="picture4">
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="loc">
+            <div class="coord">
+                <div class="var">SEKTOR</div>
+                <div class="val">@Html.DisplayFor(model => model.sektor)</div>
+            </div>
+            <div class="coord">
+                <div class="var">RZĄD</div>
+                <div class="val">@Html.DisplayFor(model => model.rzad)</div>
+            </div>
+            <div class="coord">
+                <div class="var">KWATERA</div>
+                <div class="val">@Html.DisplayFor(model => model.pozycja)</div>
+            </div>
+        </div>
+        @if (ViewBag.Admin == false)
+        {
+            <label>Opłacony do: </label>
+        }
+        @if(ViewBag.Admin == true)
+        {
+        <label>Prolongata do: </label>
+        }
+
+        @Html.DisplayFor(model => model.prolongata)<br />
+        @if (ViewBag.Admin == true)
+        {
+            <label>Głębinowy:</label> <br />
+            @Html.DisplayFor(model => model.glebiniowy, new { @transform = "scale(1.5)", @type = "checkbox" })
+            <br />
+            <label>Uwagi do kwatery: </label><br />
+            @Html.DisplayFor(model => model.uwagi)<br /><br />
+        }
+        <br />
+       
+        @if (ViewBag.pusta != true)
+        {
+            <label>Osoby pochowane w tym grobie:</label>
+            <table class="table">
+                <tr class="header">
+                    <th>Nazwisko</th>
+                    <th>Imię</th>
+                    <th>Data śmierci</th>
+                </tr>
+                @foreach (var osoba in Model.Osoba)
+                {
+                    <tr>
+                        <td class="data">@osoba.nazwisko</td>
+                        <td class="data">@osoba.imie</td>
+                        <td>@osoba.data_smierci</td>
+                        <td>
+                        <td>
+                            @if (ViewBag.Admin == true)
+                            {
+                                <button class="btn btn-default" onclick="location.href='@Url.Action("Edit","Osoba", new {id = osoba.osobaId })';return false;">Edytuj </button>
+                                <button class="btn btn-default" onclick="Confirm.render('Na pewno chcesz usunąć dane o wybranej osobie?', 'delete_post', '@osoba.osobaId')">Usuń</button>
+                            }
+                    </tr>
+                }
+            </table><br />
+            <br /><br />
+        }
+        @if (ViewBag.Admin == true)
+        {
+            <button class="btn btn-default" onclick="location.href='@Url.Action("Edit","Kwatera", new {id = Model.kwateraId})';return false;">Edytuj dane o kwaterze</button>
+            <button class="btn btn-default" onclick="location.href='@Url.Action("Create","Osoba", new {id = Model.kwateraId})';return false;">Dodaj osobę do kwatery</button>
+        }
+    </div>
+   
+</div>
+<script>
+    var modal = document.getElementById('FullImg');
+    var img = document.getElementById('myImg');
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        if(window.innerWidth>1200)
+        {
+            document.getElementById('model').style.display = "none";
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        }
+
+    }
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+        document.getElementById('model').style.display = "block";
+    }
+</script>

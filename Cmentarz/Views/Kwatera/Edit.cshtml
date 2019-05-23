@@ -1,0 +1,110 @@
+﻿@model Cmentarz.ViewModels.KwateryViewModel
+
+@using (Html.BeginForm("EditConfirmed", "Kwatera", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.kwateraId)
+	@Html.HiddenFor(model => model.sektorId)
+	@Html.HiddenFor(model => model.rzadId)
+    {
+		<div class="col-lg-9 col-centered">
+			<hr>
+			<h2 class="intro-text text-center">
+				<strong>Edycja danych o kwaterze</strong>
+			</h2>
+			<hr>
+			<table class="table">
+				<tr class="header">
+					<th>Sektor @Html.DisplayFor(model => model.sektor)</th>
+					<th>Rzad @Html.DisplayFor(model => model.rzad)</th>
+					<th>Nr kwatery @Html.DisplayFor(model => model.pozycja)</th>
+				</tr>
+			</table>
+			<div class="col-lg-6">
+				<label>Głębinowy</label><br />
+				<input type="checkbox" id="glebioniowy" name="glebiniowy" value="true" @(Model.glebiniowy ? "checked=\"checked\"" : "") /> <br />
+				<label>Prolongata do</label>
+               <br/>
+                @Html.DropDownList("Provinces", ViewBag.Years as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                <br/>
+               
+				<label>Uwagi</label>
+				@Html.TextBoxFor(model => model.uwagi, new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.uwagi, "", new { @class = "text-danger" }) <br />
+			</div>
+			<div class="col-lg-6">
+				<div class="picture">
+					<div id="kwateraImg"><img id="img" src="@Url.Content(Model.zdjecie)" alt="zdjęcie" class="picture2" name="zdjecie"/></div>
+                </div>
+                <br/>
+                <br/><br/><br/>
+                <label class="btn btn-default btn-file" style="float:left;">
+                    Wybierz zdjęcie<input type="file" id="fileLoad" style="display: none;" accept="image/*" onchange="readURL(this);" name="file">
+                </label>
+                <div id="addImg" class="text-danger" style="float:left; padding:5px;"></div>
+    
+				<br /><br/>
+				<button id="rot1" type="button" onclick="rotate(true)" class="btn btn-default">Obróć w lewo</button>
+				<button id="rot2" type="button" onclick="rotate(false)" class="btn btn-default">Obróć w prawo</button>
+				<br />
+			</div>
+			<br />
+			<div class="col-lg-12">
+				<input type="submit" value="Zapisz" class="btn btn-default" />
+			</div>
+		</div>
+	}
+}
+
+@section ScriptsBottom
+{
+<script>
+	function rotate(left) {
+		$("#rot1").prop("disabled", true);
+		$("#rot2").prop("disabled", true);
+		var image = "~@Model.zdjecie";
+		var url = "";
+
+		if (left)
+			url = '/Kwatera/RotateLeft';
+		else
+			url = '/Kwatera/RotateRight';
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			datatype: 'application/json',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				img: image
+			}),
+			success: function (data) {
+				$("#kwateraImg").html(data);
+				var d = new Date();
+				$(".picture2").attr("src", "@Model.zdjecie" + "?" + d.getTime());
+				$("#rot1").prop("disabled", false);
+				$("#rot2").prop("disabled", false);
+			}
+		});
+	}
+
+	function readURL(input) {
+		if (input.files && input.files[0] && input.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$("#img").attr("src", e.target.result);
+				$("#rot1").prop("disabled", true);
+				$("#rot2").prop("disabled", true);
+				var addImg = document.getElementById('addImg');
+
+				addImg.innerHTML = addImg.innerHTML + 'Zapisz zmiany żeby móc obracać zdjęcie';
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		} else {
+		    $("#fileLoad").val("");
+		    Alert.render('Wybrany plik nie jest plikiem graficznym!');
+		}
+	}
+</script>
+}

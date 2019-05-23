@@ -1,0 +1,84 @@
+﻿@model Cmentarz.ViewModels.SearchViewModel
+<div class="col-lg-12">
+    <div class="col-lg-4">
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Wyszukaj</strong>
+        </h2>
+        <hr>
+        <div>
+            @using (Ajax.BeginForm("List", "Home", null, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "main-content", InsertionMode = InsertionMode.Replace }, new { id = "search-form" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.Label("Nazwisko") <br />
+                @Html.TextBox("nazwisko", null, new { @class = "form-control half-width" }) <br />
+                @Html.Label("Sektor")
+                <select id="sektorDropDown" onchange="getRzadList()" class="form-control" name="sektor">
+                    <option value="">Wybierz</option>
+                    @foreach (var item in ViewBag.sektor)
+                    {
+                        <text>
+                            <option value="@item.sektorId">@item.sektor</option>
+                        </text>
+                    }
+                </select><br />
+                @Html.Label("Rząd")
+                <select id="rzadDropDown" class="form-control" name="rzad">
+                    <option>Wybierz</option>
+                </select>
+                <br />
+                @Html.Label("Data śmierci")
+                @Html.TextBoxFor(m => m.data_smierci, "", new { placeholder = "dd-mm-rrrr", @class = "form-control" }) <br />
+                @Html.Label("Zakres dat")
+                @Html.TextBox("zakres_dat1", "", new { placeholder = "rrrr", @class = "form-control" })
+                @Html.TextBox("zakres_dat2", "", new { placeholder = "rrrr", @class = "form-control" }) <br />if (ViewBag.Admin == true)
+                {
+                    @Html.Label("Przekroczona prolongata")
+                    @Html.CheckBox("prolongata", new { @class = "checkbox", @transform = "scale(1.5)" })<br />
+                }
+                <input type="submit" value="Wyszukaj" id="submit" onclick="Loading()" , class="btn btn-default" />
+                <input type="button" onclick="myFunction()" class="btn btn-default" style="float:right;" value="Reset" />}
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Mapa</strong>
+        </h2>
+        <hr>
+        <div id="map">
+            <div id="sidebar"></div>
+        </div>
+        <br />
+    </div>
+    <div class="col-lg-12">
+        <div id="main-content" class="main-content">
+           
+        </div>
+    </div>
+</div>
+<script>
+    function Loading() {
+        document.getElementById('main-content').innerHTML = '<br/><br/><div id="loading"><img src="/Content/images/ajax-loader.gif" width="30"/></div>';
+     
+    }
+    function myFunction() {
+        document.getElementById("search-form").reset();
+        $("#rzadDropDown").html("");
+        $("#rzadDropDown").append($('<option></option>').val("").html("Wybierz"));
+        document.getElementById("rzadDropDown").reset();
+    }
+</script>
+
+@section ScriptsBottom
+    {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+    <script src="~/Scripts/jquery-ajax-unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/leaflet.js"></script>
+    @Scripts.Render("~/bundles/leafletDraw")
+    <script src="~/Scripts/MapScript.js"></script>
+
+}

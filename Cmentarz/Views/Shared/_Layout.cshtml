@@ -1,0 +1,105 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Cmentarz w Nowem</title>
+    @System.Web.Optimization.Styles.Render("~/Content/themes/base/css")
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="~/Content/leaflet.css" />
+    <link rel="stylesheet" href="~/Content/leaflet.draw.css" />
+    <link href="~/Content/bootstrap1.css" rel="stylesheet">
+    <link href="~/Content/bootstrap2.css" rel="stylesheet">
+    <script src="~/Scripts/dialog.js"></script>
+    <link href="~/Content/dialog.css" rel="stylesheet" />
+</head>
+<body onload="init()">
+    <div id="FullImg" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01" style="opacity: 1;">
+    </div>
+    <div id="dialogoverlay"></div>
+    <div id="dialogbox">
+        <div>
+            <div id="dialogboxhead"></div>
+            <div id="dialogboxbody"></div>
+            <div id="dialogboxfoot"></div>
+        </div>
+    </div>
+    <div id="model">
+    <div class="brand">Cmentarz komunalny w Nowem</div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href='@Url.Action("Index", "Home")'>Cmentarz w Nowem</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href='@Url.Action("Index", "Home")'>Strona główna</a>
+                    </li>
+                    <li>
+                        <a href='@Url.Action("Contact", "Home")'>Kontakt</a>
+                    </li>
+                    <li>
+                        <a href='@Url.Action("About", "Home")'>O twórcach</a>
+                    </li>    
+                </ul>
+                @if (ViewBag.Admin == true)
+                {
+                    <ul class="nav navbar-nav">
+                        <li class="navbar-nav reduced-text">
+                            <a href='@Url.Action("Create", "Rzad")'>Dodaj nowy rząd</a>
+                        </li>
+                        <li class="navbar-nav reduced-text">
+                            <a href='@Url.Action("Find", "Kwatera")'>Wyszukaj puste kwatery</a>
+                        </li>
+                        <li class="navbar-nav reduced-text">
+                            <a href='@Url.Action("Add", "Kwatera")'>Dodaj kwatery w sektorze</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="box">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container" style="height: 45px;"> 
+            <div style="float: left">@Html.Partial("_LoginPartial")</div>
+            <div style="margin: 0 auto; width: 100px;">&copy; 2017</div> 
+            <div style="margin: 0 auto; width:300px;">Kopiowanie bez zgody autora zabronione</div> 
+        </div>
+    </footer>
+        </div>
+    <script src="~/Scripts/jquery.js"></script>
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        $('.carousel').carousel({
+            interval: 5000 
+        })
+    </script>
+</body>
+</html>
+
+@RenderSection("ScriptsBottom", required: false)
+@RenderSection("scripts", required: false)

@@ -1,0 +1,26 @@
+﻿@model Cmentarz.ViewModels.KwateraAddViewModel
+
+<div class="col-lg-5 col-centered" style="min-height:300px;">
+    <hr>
+    <h2 class="intro-text text-center">
+        <strong>Dodawanie kwater w sektorze</strong>
+    </h2>
+    <hr>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <label>Wybierz sektor</label><br />
+        @Html.DropDownList("sektor", null, "Wybierz", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.sektor, "", new { @class = "text-danger" })
+        <label>Podaj liczbę kwater do dodania w każdym rzędzie sektora</label><br />
+                    @Html.TextBoxFor(model => model.liczba_kwater, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.liczba_kwater, "", new { @class = "text-danger" }) <br />
+                    <input type="submit" value="Dodaj" class="btn btn-default" />                   
+    }
+</div>
+@section ScriptsBottom{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+    <script src="~/Scripts/ajaxSearchScripts.js"></script>
+}

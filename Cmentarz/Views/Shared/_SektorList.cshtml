@@ -1,0 +1,30 @@
+﻿@model Cmentarz.ViewModels.RzadAddViewModel
+@if ((ViewBag.Liczba != 0)&& (ViewBag.Admin == true))
+{
+
+<section class="main-content">
+
+
+    @using (Html.BeginForm("Add", "Rzad"))
+    {
+        @Html.HiddenFor(model => model.SektorId)
+        @Html.HiddenFor(model => model.Rzad_new)
+        @Html.HiddenFor(model => model.Liczba_kwater)
+        @Html.HiddenFor(model => model.Last_rzad)
+        @Html.HiddenFor(model => model.Rzad_new)
+        @Html.Label("Liczba rzędów w wybranem sektorze to")
+        Write("  ");
+        @Html.DisplayFor(model => model.Liczba_rzedow) <br />
+        @Html.Label("Ostatni rząd to")
+        Write("  ");
+        @Html.DisplayFor(model => model.Last_rzad) <br />
+        @Html.Label("Nazwa nowego rzędu  ")
+        Write("  ");
+        @Html.DisplayFor(m => m.Rzad_new) <br />
+        @Html.Label("Liczba kwater w nowem rzędzie  ")
+        Write("  ");
+        @Html.DisplayFor(model => model.Liczba_kwater) <br /> <br />
+            <input type="submit" value="Dodaj" class="btn btn-default" />
+    }
+</section>
+}

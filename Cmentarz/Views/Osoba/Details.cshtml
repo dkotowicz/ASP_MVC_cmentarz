@@ -1,0 +1,24 @@
+﻿@model Cmentarz.ViewModels.DetailOsobyViewModel
+<div class="col-lg-12">
+    <br /><br />
+    <hr>
+    <h2 class="intro-text text-center">
+        <strong>Dane o osobie</strong>
+    </h2>
+    <hr>
+    <div class="head">
+        <h5>ś.p. @Html.DisplayFor(model => model.imie) @Html.DisplayFor(model => model.nazwisko)</h5>
+        <h5>Data śm. @Html.DisplayFor(model => model.data_smierci)</h5>
+    </div>
+    <br />
+    <label>
+        Lokalizacja grobu: @Html.DisplayFor(model => model.sektor)/@Html.DisplayFor(model => model.rzad)/@Html.DisplayFor(model => model.pozycja)
+    </label>
+    <br />
+    <label>Grób opłacony do: </label><label>@Html.DisplayFor(model => model.prolongata)</label><br />
+    <button class="btn btn-default" onclick="location.href='@Url.Action("Details","Kwatera", new {id = Model.kwateraId})';return false;">Przejdź do kwatery</button>
+</div>
+@section ScriptsBottom{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myScripts")
+}

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Cmentarz.ViewModels.KwateryListViewModel>
+    @if (ViewBag.liczba == 0)
+    {
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Nie znaleziono</strong>
+        </h2>
+        <hr>
+    }
+    else
+    {
+        <hr>
+        <h2 class="intro-text text-center">
+            <strong>Lista pustych kwater</strong>
+        </h2>
+        <hr>
+        <table class="table">
+            <tr class="header">
+                <th>Sektor</th>
+                <th>Rząd</th>
+                <th>Nr kwatery</th>
+            </tr>
+            @foreach (var kwatera in Model)
+            {
+                <tr>
+                    <td>@kwatera.sektor</td>
+                    <td>@kwatera.rzad</td>
+                    <td>@kwatera.pozycja</td>
+                    @if (ViewBag.Admin == true)
+                    {
+                        <td>
+                            <button class="btn btn-default" onclick="location.href='@Url.Action("Edit","Kwatera", new {id = kwatera.kwateraId})';return false;">Edytuj dane o kwaterze</button>
+                            <button class="btn btn-default" onclick="location.href='@Url.Action("Details","Kwatera", new {id = kwatera.kwateraId})';return false;">Więcej o kwaterze</button>
+                            <button class="btn btn-default" onclick="location.href='@Url.Action("Create","Osoba", new {id = kwatera.kwateraId})';return false;">Dodaj osobę</button>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+
+
